@@ -1,0 +1,27 @@
+--Create a clothing store database
+
+CREATE TABLE store (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, quanity INTEGER, aisle INTEGER);
+INSERT INTO store VALUES (1, "Jeans", 40, 10, 2);
+INSERT INTO store VALUES (2, "Blouses", 30, 15, 1);
+INSERT INTO store VALUES (3, "Sweaters", 50, 15, 1);
+INSERT INTO store VALUES (4, "Tees", 20, 20, 3);
+INSERT INTO store VALUES (5, "Pants", 55, 10, 2);
+INSERT INTO store VALUES (6, "Blazers", 100, 5, 1);
+INSERT INTO store VALUES (7, "Tops", 30, 20, 4);
+INSERT INTO store VALUES (8, "Tanks", 15, 15, 3);
+INSERT INTO store VALUES (9, "Leggings", 35, 20, 6);
+INSERT INTO store VALUES (10, "Sweat Pants", 25, 10, 6);
+INSERT INTO store VALUES (11, "Sweatshirts", 30, 10, 6);
+INSERT INTO store VALUES (12, "Jackets", 80, 15, 7);
+INSERT INTO store VALUES (13, "Men's Jeans", 20, 40, 8);
+INSERT INTO store VALUES (14, "Men's Tees", 20, 20, 8);
+INSERT INTO store VALUES (15, "Men's shirts", 15, 45, 8);
+
+--display the database ordered by price.
+SELECT * FROM store ORDER BY price;
+
+--display the total number of items in the store
+SELECT SUM (quanity) FROM store; 
+
+--display the average price of items in aisle 1
+SELECT AVG (price) FROM store WHERE aisle=1;
