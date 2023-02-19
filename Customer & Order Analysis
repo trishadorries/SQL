@@ -1,28 +1,50 @@
 #In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
 
+
 --How many orders were placed in January? 9681
 SELECT COUNT(OrderID) FROM BIT_DB.JanSales WHERE (length (OrderID)=6 AND OrderID<> 'Order ID') AND (OrderID IS NOT NULL AND OrderID <> ' ');
 
 --How many of those orders were for an iPhone? 379
-SELECT COUNT(product) FROM BIT_DB.JanSales WHERE product="iPhone";
+SELECT COUNT(orderid) FROM BIT_DB.JanSales WHERE product='iPhone' AND length(orderid) = 6 AND orderid<> 'Order ID';
 
 --Select the customer account numbers for all the orders that were placed in February 1000
-SELECT BIT_DB.customers.acctnum FROM BIT_DB.customers
-    JOIN BIT_DB.FebSales
-    ON BIT_DB.customers.order_id = BIT_DB.FebSales.orderID;
+SELECT distinct acctnum 
+FROM BIT_DB.customers cust
+
+INNER JOIN BIT_DB.FebSales Feb
+ON cust.order_id=Feb.orderid
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID';
+    
+
    
 --Which product was the cheapest one sold in January, and what was the price--AAA batteries, 4 pack $2.99 
-SELECT MIN(price), product FROM BIT_DB.JanSales;
+SELECT MIN(price), product 
+FROM BIT_DB.JanSales
+GROUP BY product, price
+ORDER BY price ASC
+LIMIT 1;
 
---What is the total revenue for each product sold in January? $9,490,473.88
-SELECT SUM(product * price) FROM BIT_DB.JanSales;
+--What is the total revenue for each product sold in January? 
+SELECT SUM(quantity)*price as revenue,product 
+FROM BIT_DB.JanSales
+GROUP BY product;
 
---Which products were sold in February at 548 Lincoln St., Seattle, WA 98101, how many of each were sold, and what was the totaSELECT Product, location, Quantity, price FROM BIT_DB.FebSales WHERE location="548 Lincoln St, Seattle, WA 98101" AND total revenue = quanity*pricel revenue?
-4 Pack AA batteries, $7.68
-SELECT Product, SUM(quantity)*price as revenue FROM BIT_DB.FebSales WHERE location="548 Lincoln St, Seattle, WA 98101";
+---Which products were sold in February at 548 Lincoln St., Seattle, WA 98101, how many of each were sold, and what was the totaSELECT Product, location, Quantity, price FROM BIT_DB.FebSales WHERE location="548 Lincoln St, Seattle, WA 98101" AND total revenue = quanity*pricel revenue?
+--2 AA batteries (4pack) revenue $7.68
 
---How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers? (1787) and $10k444l80)
-SELECT COUNT(customers.acctnum), SUM(FebSales.Quantity)*FebSales.price FROM BIT_DB.customers customers
-    LEFT JOIN BIT_DB.FebSales FebSales
-    ON FebSales.orderID=customers.order_id 
-    WHERE Quantity>=2;
+SELECT SUM(quantity),product,
+SUM(quantity)*price as revenue 
+FROM BIT_DB.FebSales 
+WHERE location='548 Lincoln St, Seattle, WA 98101'
+GROUP BY product;
+
+--How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers? (278) and avg spent R13.83)
+SELECT COUNT(distinct cust.acctnum), 
+AVG(quantity*price)
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust
+ON Feb.orderID=cust.order_id 
+WHERE Feb.Quantity>2
+AND length(orderid) = 6
+AND orderid <> 'Order ID';
