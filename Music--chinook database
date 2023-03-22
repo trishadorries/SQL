@@ -1,17 +1,9 @@
 /* Final Project Break Into Tech--chinook database
 
 
-My questions (start at #15):
-Determine what want to know:
-First explore the data, looking at sample of all the tables
-15. many countries represented in the customers table, average number of customers per country?
-16. Genres--something to do with?
-17. UnitPrice related to track? 
-18, Ubviucesm total invoices/sales per customer? By country?
-19. Most popular (or most sold) by media type?
-20. How many times a track appears in the playlist?
-21. Which tracks sell the most? average millisecond, bypes, unitprice?
-
+Questions 1-14 were prompted quesions. My questions (start at #15):
+Determine what want to know, first I explored the tables, examined the
+database flowchart (which tables are connected to other tables).
 
 */
 
@@ -138,7 +130,7 @@ SELECT
 FROM invoices
 WHERE InvoiceDate LIKE '2009%';
 
-/* 10. Wriste a query that includes the purchased track name  with 
+/* 10. Wriste a query that includes the purchased track name with 
 each invoice line id */
 
 SELECT
@@ -287,7 +279,7 @@ SELECT
     AVG(Bytes)
 FROM tracks;
 
-/* Which artist sold the most as total sales? */
+/* 21. Which artist sold the most as total sales? */
 
 SELECT
     artists.Name AS artist_name,
